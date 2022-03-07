@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<title>Login</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <div class="container" align="'center">
+    <h1>LOGIN PAGE</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div><p style="color:red">{{ message }}</p></div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+            <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+            </p>
+            <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+            </p>
+            <p>{{ form.remember_me() }} {{form.remember_me.label}}</p>
+            <p>{{ form.submit() }}</p>
+            </form>
+    </div>
+</body>       
+</html>

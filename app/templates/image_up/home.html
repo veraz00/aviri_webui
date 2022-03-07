@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<h2>Select an image to upload and display</h2>
+{% if filename %}
+	<div>
+		<img src="{{ url_for('image_up.display_image', subdir = 'uploads', filename=filename) }}" width="600" height="400">
+	</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('image_up.upload_image') }}" enctype="multipart/form-data">
+    <dl>
+		<p>
+			<input type="file" name="file" autocomplete="off" required>
+		</p>
+    </dl>
+    <p>
+		<input type="submit" value="Submit">
+		{% if id %}
+			<h5>Image_ID: {{ id }}</h5>
+		{% else %}
+			<h5>Cannot used for prediction </h5>
+		{% endif %}
+	</p>
+</form>
+
+{% endblock %}
