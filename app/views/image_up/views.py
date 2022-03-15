@@ -1,6 +1,6 @@
-
+from fpdf import FPDF
 from ast import Param
-from flask import render_template, url_for, redirect , request, current_app, flash
+from flask import render_template, url_for, redirect , request, current_app, flash, Response
 from flask_login import current_user, login_required
 from . import image_up
 from app.extensions import db
@@ -88,7 +88,6 @@ def upload_image():
 @image_up.route('/display/<subdir>/<filename>')
 def display_image(subdir, filename):
 #print('display_image filename: ' + filename)
-	print('url_dispaly', url_for('static', filename=f'{subdir}/{filename}'))
 	return redirect(url_for('static', filename=f'{subdir}/{filename}'), code=301)
 
 @image_up.route('/prediction', methods = ['GET', 'POST'])
@@ -104,7 +103,6 @@ def get_prediction():
 		heatmap_str = requests.get(API_HEATMAP + f'/download/{prediction["heatmap_name_id"]}').json()
 		write_as_heatmap( heatmap_str['heatmap_content'], prediction['heatmap_name'])
 		filename = secure_filename(prediction['heatmap_name'])
-		print('filename', filename)
 		return render_template('image_up/prediction.html', prediction = prediction, filename = filename) 
 	else:
 		return render_template('image_up/prediction.html', form = form)	
@@ -121,24 +119,59 @@ def get_prediction():
 # get the heatmap; 
 # show it and downlaod
 
+@image_up.route('/report', methods = ['GET'])
+def get_report():
+	id, model_name = request.args.get('id'), request.args.get('model_name')
+	prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
 
-@image_up.route('/auc', methods = ['GET', 'POST'])
-def auc():
-	if request.method == 'GET':
-		return render_template('image_up/auc.html')
+	pdf = FPDF()
+	pdf.add_page()
+		
+	page_width = pdf.w - 2 * pdf.l_margin
+		
+	pdf.set_font('Times','B',14.0) 
+	pdf.cell(page_width, 0.0, 'Aviri Prediction Report', align='C')
+	pdf.ln(10)  # ??
 
-	form = PredictionForm()
-	# if request.method == 'POST':  # GET HEATMAP-- 
-	if form.validate_on_submit():  # if it is 'Post'
-		id = form.image_id.data
-		model_name= form.model_name.data
 
-		prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
-		print('prediction:', prediction)
-		heatmap_str = requests.get(API_HEATMAP + f'/download/{prediction["heatmap_name_id"]}').json()
-		write_as_heatmap( heatmap_str['heatmap_content'], prediction['heatmap_name'])
-		filename = secure_filename(prediction['heatmap_name'])
-		print('filename', filename)
-		return render_template('image_up/prediction.html', prediction = prediction, filename = filename) 
-	else:
-		return render_template('image_up/prediction.html', form = form)	
+	pdf.set_font('Courier', '', 12)
+	pdf.cell(0, 10, 'Filename: ' + prediction['filename'], 0, 1)
+	pdf.cell(0, 10, 'Result: ' + str(prediction['result']), 0, 1)
+	if model_name == 'VI_CNN':
+		pdf.cell(0, 10, 'Probability_0: ' + str(round(prediction['probability_VI0'], 2)), 0, 1)
+		pdf.cell(0, 10, 'Heatmap ', 0, 1)
+		pdf.image(os.path.join(current_app.config['HEATMAP_FOLDER'], prediction['heatmap_name']), 10, 60,  pdf.w-20,  (pdf.w-20)/2.7)  # ??
+		# automatic get column postion 
+
+	pdf.set_font('Times','',10.0) 
+	pdf.cell(page_width, 170, '- end of report -', align='C')  # automatic get coumn position 
+	# pdf.output('tuto2.pdf', 'F')
+			
+	return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition':'attachment;filename=Aviri_Prediction_Report.pdf'})
+
+
+	# return render_template('image_up/report.html', image_id = id, heatmap_name = heatmap_name)
+
+
+
+
+# @image_up.route('/auc', methods = ['GET', 'POST'])
+# def auc():
+# 	if request.method == 'GET':
+# 		return render_template('image_up/auc.html')
+
+# 	form = PredictionForm()
+# 	# if request.method == 'POST':  # GET HEATMAP-- 
+# 	if form.validate_on_submit():  # if it is 'Post'
+# 		id = form.image_id.data
+# 		model_name= form.model_name.data
+
+# 		prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
+# 		print('prediction:', prediction)
+# 		heatmap_str = requests.get(API_HEATMAP + f'/download/{prediction["heatmap_name_id"]}').json()
+# 		write_as_heatmap( heatmap_str['heatmap_content'], prediction['heatmap_name'])
+# 		filename = secure_filename(prediction['heatmap_name'])
+# 		print('filename', filename)
+# 		return render_template('image_up/prediction.html', prediction = prediction, filename = filename) 
+# 	else:
+# 		return render_template('image_up/prediction.html', form = form)	

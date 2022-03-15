@@ -2,13 +2,14 @@ from flask import Flask
 import sys
 import click
 import os 
-# sys.path.append("..")  
+sys.path.append("..")  
 # all the folder, on the same dir, or sub; all use this path as cwd
 from flask_migrate import Migrate
 from flask_login import current_user
 # from app.models import Images, Predictions
 
 from app.extensions import bootstrap, db, login_manager
+
 
 def register_extensions(app):
 

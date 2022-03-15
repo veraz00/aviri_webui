@@ -61,3 +61,5 @@ headers = {'Content-Type': 'application/json'}
 	# print('response.status_code', response.status_code)
 
 # prediction 
+
+git rm -r --cached app/static/uploads
