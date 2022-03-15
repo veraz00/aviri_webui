@@ -122,4 +122,36 @@ def get_prediction():
 # show it and downlaod
 
 
+@image_up.route('/report', methods = ['GET'])
+def get_report():
+	id, model_name = request.args.get('id'), request.args.get('model_name')
+	prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
+
+	pdf = FPDF()
+	pdf.add_page()
+		
+	page_width = pdf.w - 2 * pdf.l_margin
+		
+	pdf.set_font('Times','B',14.0) 
+	pdf.cell(page_width, 0.0, 'Aviri Prediction Report', align='C')
+	pdf.ln(10)  # ??
+
+
+	pdf.set_font('Courier', '', 12)
+	pdf.cell(0, 10, 'Filename: ' + prediction['filename'], 0, 1)
+	pdf.cell(0, 10, 'Result: ' + str(prediction['result']), 0, 1)
+	if model_name == 'VI_CNN':
+		pdf.cell(0, 10, 'Probability_0: ' + str(round(prediction['probability_VI0'], 2)), 0, 1)
+		pdf.cell(0, 10, 'Heatmap ', 0, 1)
+		pdf.image(os.path.join(current_app.config['HEATMAP_FOLDER'], prediction['heatmap_name']), 10, 60,  pdf.w-20,  (pdf.w-20)/2.7)  # ??
+		# automatic get column postion 
+
+	pdf.set_font('Times','',10.0) 
+	pdf.cell(page_width, 170, '- end of report -', align='C')  # automatic get coumn position 
+	# pdf.output('tuto2.pdf', 'F')
+			
+	return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition':'attachment;filename=Aviri_Prediction_Report.pdf'})
+
+
+
 
