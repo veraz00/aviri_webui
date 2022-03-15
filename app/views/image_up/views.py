@@ -122,23 +122,4 @@ def get_prediction():
 # show it and downlaod
 
 
-@image_up.route('/auc', methods = ['GET', 'POST'])
-def auc():
-	if request.method == 'GET':
-		return render_template('image_up/auc.html')
 
-	form = PredictionForm()
-	# if request.method == 'POST':  # GET HEATMAP-- 
-	if form.validate_on_submit():  # if it is 'Post'
-		id = form.image_id.data
-		model_name= form.model_name.data
-
-		prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
-		print('prediction:', prediction)
-		heatmap_str = requests.get(API_HEATMAP + f'/download/{prediction["heatmap_name_id"]}').json()
-		write_as_heatmap( heatmap_str['heatmap_content'], prediction['heatmap_name'])
-		filename = secure_filename(prediction['heatmap_name'])
-		print('filename', filename)
-		return render_template('image_up/prediction.html', prediction = prediction, filename = filename) 
-	else:
-		return render_template('image_up/prediction.html', form = form)	
