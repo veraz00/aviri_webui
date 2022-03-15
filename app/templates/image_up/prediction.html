@@ -17,9 +17,12 @@
 	Result: <strong>{{ prediction.result }}</strong></p>
 	{% if prediction.model_name == "VI_CNN" %}
 		Model_name: <strong>{{ prediction.model_name }}</strong></p>
-		Probability_0: <strong>{{ prediction.probability_VI0 }}</strong></p>
+		Probability_0: <strong>{{ prediction.probability_VI0 }}</strong></p></div>
 	{% endif %}
-	</div>
+	<a class="btn btn-info btn-sm" href="{{ url_for('image_up.get_report', id= prediction.filename_id, model_name=prediction.model_name) }}#download">Generate Report</a></p>
+	
+
+</div>
 {% endif %}
 
 <div class="row">
