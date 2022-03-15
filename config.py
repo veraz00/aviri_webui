@@ -11,7 +11,11 @@ class Config:
     BOOTSTRAP_SERVE_LOCAL = True
     UPLOAD_FOLDER = os.path.join(basedir ,'app/static/uploads')
     HEATMAP_FOLDER = os.path.join(basedir ,'app/static/heatmaps')
-
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.mkdir(UPLOAD_FOLDER)
+    if not os.path.exists(HEATMAP_FOLDER):
+        os.mkdir(HEATMAP_FOLDER)
+        
 class DevelopmentConfig(Config):
     DEBUG =True
     # CKEDITOR_ENABLE_CSRF = True
