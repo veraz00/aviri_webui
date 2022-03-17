@@ -153,7 +153,6 @@ def get_report():
 	return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition':'attachment;filename=Aviri_Prediction_Report.pdf'})
 
 
-	# return render_template('image_up/report.html', image_id = id, heatmap_name = heatmap_name)
 
 
 
@@ -178,3 +177,6 @@ def get_report():
 # 		return render_template('image_up/prediction.html', prediction = prediction, filename = filename) 
 # 	else:
 # 		return render_template('image_up/prediction.html', form = form)	
+
+
+
