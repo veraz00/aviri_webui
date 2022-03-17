@@ -16,5 +16,5 @@ class LoginForm(FlaskForm):
 
 class PredictionForm(FlaskForm):
     image_id = StringField('Image_ID', validators = [DataRequired(), Length(20, 50)])
-    model_name = RadioField('Model_name', choices=[('VI_CNN'), ('Densenet121')])
+    model_name = RadioField('Model_name', choices=[('VI'), ('VI_Moderated')])
     submit = SubmitField('Predict')

@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-
 {% block app_content %}
 <h2>Get the prediction result</h2>
 
 {% if filename %}
-	<div>
-		<img src="{{ url_for('image_up.display_image', subdir = 'heatmaps', filename=filename) }}" width="900" height="350">
+
+	<div class="clearfix">
+		<div class="img-container">
+		<img src="{{ url_for('image_up.display_image', subdir = 'uploads', filename=prediction.filename) }}" style="width:100%" class="image">
+		</div>
+		<div class="img-container">
+		<img id = 'heatmap' src="{{ url_for('image_up.display_image', subdir = 'heatmaps', filename=filename) }}" style="width:100%" class="image">
+		</div>
+
 	</div>
 {% endif %}
 
@@ -15,7 +21,7 @@
 	<div>
 	Filename: <strong>{{ prediction.filename }}</strong> </p>
 	Result: <strong>{{ prediction.result }}</strong></p>
-	{% if prediction.model_name == "VI_CNN" %}
+	{% if prediction.model_name == "VI" or "VI_Moderate" %}
 		Model_name: <strong>{{ prediction.model_name }}</strong></p>
 		Probability_0: <strong>{{ prediction.probability_VI0 }}</strong></p></div>
 	{% endif %}

@@ -63,3 +63,8 @@ headers = {'Content-Type': 'application/json'}
 # prediction 
 
 git rm -r --cached app/static/uploads
+
+
+http://cde.peru21.pe/ima/0/0/0/9/3/93726.jpg
+http://jsfiddle.net/jcE8f/
+https://jsbin.com/xisocucehu/edit?html,js,output

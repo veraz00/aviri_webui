@@ -5,14 +5,14 @@
 <h2>Select an image to upload and display</h2>
 {% if filename %}
 	<div>
-		<img src="{{ url_for('image_up.display_image', subdir = 'uploads', filename=filename) }}" width="600" height="400">
+		<img src="{{ url_for('image_up.display_image', subdir = 'uploads', filename=filename) }}" width=40%>
 	</div>
 {% endif %}
 
 <form method="post" action="{{ url_for('image_up.upload_image') }}" enctype="multipart/form-data">
     <dl>
 		<p>
-			<input type="file" name="file" autocomplete="off" required>
+		<input type="file" name="file" autocomplete="off" required>
 		</p>
     </dl>
     <p>

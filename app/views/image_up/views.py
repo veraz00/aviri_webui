@@ -97,8 +97,8 @@ def get_prediction():
 	if form.validate_on_submit():  # if it is 'Post'
 		id = form.image_id.data
 		model_name= form.model_name.data
-
-		prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
+		if model_name == 'VI' or 'VI_Moderate':
+			prediction = requests.get(API_PREDICTION + f'/{id}/{model_name}').json()
 		print('prediction:', prediction)
 		heatmap_str = requests.get(API_HEATMAP + f'/download/{prediction["heatmap_name_id"]}').json()
 		write_as_heatmap( heatmap_str['heatmap_content'], prediction['heatmap_name'])
@@ -134,13 +134,16 @@ def get_report():
 	pdf.ln(10)  # ??
 
 
-	pdf.set_font('Courier', '', 12)
+	pdf.set_font('Times', '', 12)
 	pdf.cell(0, 10, 'Filename: ' + prediction['filename'], 0, 1)
 	pdf.cell(0, 10, 'Result: ' + str(prediction['result']), 0, 1)
-	if model_name == 'VI_CNN':
+	if model_name == 'VI' or 'VI_Moderate':
+		pdf.cell(0, 10, 'Model Name: '+ prediction['model_name'], 0, 1)
 		pdf.cell(0, 10, 'Probability_0: ' + str(round(prediction['probability_VI0'], 2)), 0, 1)
 		pdf.cell(0, 10, 'Heatmap ', 0, 1)
-		pdf.image(os.path.join(current_app.config['HEATMAP_FOLDER'], prediction['heatmap_name']), 10, 60,  pdf.w-20,  (pdf.w-20)/2.7)  # ??
+		pdf.image(os.path.join(current_app.config['UPLOAD_FOLDER'], prediction['filename']), 10, 70,  (pdf.w-20)/2,  (pdf.w-20)/2.7)  # ??
+		pdf.image(os.path.join(current_app.config['HEATMAP_FOLDER'], prediction['heatmap_name']), 10+(pdf.w-20)/2, 70,  (pdf.w-20)/2,  (pdf.w-20)/2.7)  # ??
+		
 		# automatic get column postion 
 
 	pdf.set_font('Times','',10.0) 
