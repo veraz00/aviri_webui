@@ -1,0 +1,4 @@
+login_requirement
+model: prediction, heatmap is not the same 
+takes long time to open link in web app
+not copy image id (touch screen is difficult to use )
