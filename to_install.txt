@@ -1,4 +1,5 @@
 to install list:
+chrome, winrar
 1. python 3.7  
 # how to install python3.7: https://phoenixnap.com/kb/how-to-install-python-3-windows
 # add python 3,7 into path when installing it; if not, added it by yourself
@@ -13,7 +14,10 @@ py -m venv py37-env # https://ordinarycoders.com/blog/article/python-virtual-env
 python -m flask db init
 python -m flask db migrate -m "Admin" 
 python -m flask db upgrade
-flask init # create admin ihpc ihpc
+flask init 
+# create admin 
+# username: ihpc 
+# password: ihpc
 5) 
 run script on cmd: https://www.wikihow.com/Use-Windows-Command-Prompt-to-Run-a-Python-File
 
