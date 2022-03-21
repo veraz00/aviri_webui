@@ -5,12 +5,11 @@ chrome, winrar
 # add python 3,7 into path when installing it; if not, added it by yourself
 2. install pip  # https://phoenixnap.com/kb/how-to-install-python-3-windows
 
-
+3. run script
 1) go to package folder
-2) build virtual env
-py -m venv py37-env # https://ordinarycoders.com/blog/article/python-virtual-environment
-3) activate virtual env
-4) database init
+in cmd >d:
+>aviri_front>main
+2) database init
 python -m flask db init
 python -m flask db migrate -m "Admin" 
 python -m flask db upgrade
@@ -18,7 +17,4 @@ flask init
 # create admin 
 # username: ihpc 
 # password: ihpc
-5) 
-run script on cmd: https://www.wikihow.com/Use-Windows-Command-Prompt-to-Run-a-Python-File
-
-6)edit script: idle
+3) edit script: idle
