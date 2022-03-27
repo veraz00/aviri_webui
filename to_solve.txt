@@ -1,4 +1,4 @@
-login_requirement
-model: for the same eye but different images, prediction, heatmap is not the same 
+login_requirement does not works
+model: for the same eye but different images, prediction & heatmap is not the same 
 radio field: add "Model Name"
 not copy image id (touch screen is difficult to use )
